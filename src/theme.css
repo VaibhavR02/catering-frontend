@@ -1,0 +1,95 @@
+/* =====================================================
+   TIFFINOS – GLOBAL THEME VARIABLES
+   Add this to your src/index.css (at the very top)
+   ===================================================== */
+
+/* ── LIGHT THEME ── */
+:root,
+:root[data-theme="light"] {
+  --bg-shell:          #f0f2f7;
+  --bg-sidebar:        #ffffff;
+  --bg-topbar:         #ffffff;
+  --bg-main:           #f0f2f7;
+  --border:            #e4e7ef;
+  --text-primary:      #1a1d27;
+  --text-secondary:    #5a6072;
+  --text-muted:        #9399ab;
+  --nav-hover:         #f4f6fb;
+  --nav-active-bg:     #fff4e6;
+  --nav-active-txt:    #f07d00;
+  --nav-active-bar:    #f07d00;
+  --badge-bg:          #f07d00;
+  --badge-txt:         #fff;
+  --avatar-user:       linear-gradient(135deg,#fbbf24,#f59e0b);
+  --avatar-vendor:     linear-gradient(135deg,#34d399,#059669);
+  --avatar-master:     linear-gradient(135deg,#818cf8,#6366f1);
+  --logo-accent:       #f07d00;
+  --shadow-sidebar:    0 0 30px rgba(0,0,0,.06);
+  --shadow-topbar:     0 1px 0 var(--border);
+  --toggle-bg:         #e4e7ef;
+  --toggle-knob:       #ffffff;
+  --notif-dot:         #ef4444;
+  --section-title:     #9399ab;
+  /* Card / content */
+  --card-bg:           #ffffff;
+  --card-border:       #e4e7ef;
+  --card-shadow:       0 2px 12px rgba(0,0,0,.06);
+  --card-hover-shadow: 0 6px 24px rgba(0,0,0,.1);
+  --input-bg:          #f7f8fc;
+  --input-border:      #d1d5e0;
+  --table-header-bg:   #f4f6fb;
+  --table-row-hover:   #fafbfe;
+  --stat-card-bg:      #ffffff;
+  --chart-bg:          #ffffff;
+  color-scheme: light;
+}
+
+/* ── DARK THEME ── */
+:root[data-theme="dark"] {
+  --bg-shell:          #0f1117;
+  --bg-sidebar:        #161b26;
+  --bg-topbar:         #161b26;
+  --bg-main:           #0f1117;
+  --border:            #252b3b;
+  --text-primary:      #e8eaf0;
+  --text-secondary:    #8b92a8;
+  --text-muted:        #4e5568;
+  --nav-hover:         #1e2436;
+  --nav-active-bg:     #2a1f0e;
+  --nav-active-txt:    #f59e0b;
+  --nav-active-bar:    #f59e0b;
+  --badge-bg:          #f59e0b;
+  --badge-txt:         #0f1117;
+  --avatar-user:       linear-gradient(135deg,#fbbf24,#d97706);
+  --avatar-vendor:     linear-gradient(135deg,#34d399,#047857);
+  --avatar-master:     linear-gradient(135deg,#a78bfa,#7c3aed);
+  --logo-accent:       #f59e0b;
+  --shadow-sidebar:    0 0 40px rgba(0,0,0,.4);
+  --shadow-topbar:     0 1px 0 var(--border);
+  --toggle-bg:         #252b3b;
+  --toggle-knob:       #f59e0b;
+  --notif-dot:         #ef4444;
+  --section-title:     #4e5568;
+  /* Card / content */
+  --card-bg:           #1a2030;
+  --card-border:       #252b3b;
+  --card-shadow:       0 2px 12px rgba(0,0,0,.3);
+  --card-hover-shadow: 0 6px 24px rgba(0,0,0,.5);
+  --input-bg:          #1e2436;
+  --input-border:      #2e3650;
+  --table-header-bg:   #1e2436;
+  --table-row-hover:   #1a2030;
+  --stat-card-bg:      #1a2030;
+  --chart-bg:          #1a2030;
+  color-scheme: dark;
+}
+
+/* ── BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-shell);
+  color: var(--text-primary);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  transition: background .25s, color .25s;
+}
