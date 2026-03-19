@@ -1,76 +1,82 @@
 // src/contexts/AuthContext.jsx
-import { createContext, useContext, useState, useEffect } from 'react'
-import axios from 'axios'
+import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
 // ── Axios instance ─────────────────────────────────────
 export const api = axios.create({
-  baseURL: 'http://localhost:5000',
-})
+  // baseURL: 'http://localhost:5000',
+  baseURL: "https://catering-backend-qffz.onrender.com",
+});
 
 // Auto-attach token to every request
-api.interceptors.request.use(config => {
-  const token = localStorage.getItem('token')
-  if (token) config.headers.Authorization = `Bearer ${token}`
-  return config
-})
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
 // ── Provider ───────────────────────────────────────────
 export function AuthProvider({ children }) {
-  const [user,    setUser]    = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // On mount: restore session if token exists
   useEffect(() => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem("token");
     if (token) {
       fetchMe()
-        .then(u => setUser(u))
-        .catch(() => localStorage.removeItem('token'))
-        .finally(() => setLoading(false))
+        .then((u) => setUser(u))
+        .catch(() => localStorage.removeItem("token"))
+        .finally(() => setLoading(false));
     } else {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [])
+  }, []);
 
   // ── Fetch current user → returns data.data ─────────────
   async function fetchMe() {
-    const { data } = await api.get('/api/v1/auth/me')
-    return data.data   // { _id, username, email, user_type, ... }
+    const { data } = await api.get("/api/v1/auth/me");
+    return data.data; // { _id, username, email, user_type, ... }
   }
 
   // ── Login ──────────────────────────────────────────────
   async function login(email, password) {
     try {
-      const { data } = await api.post('/api/v1/auth/signin', { email, password })
+      const { data } = await api.post("/api/v1/auth/signin", {
+        email,
+        password,
+      });
       // data = { success, message, token }
-      localStorage.setItem('token', data.token)
+      localStorage.setItem("token", data.token);
 
-      const profile = await fetchMe()
-      setUser(profile)
-      return { ...profile, message: data.message }
+      const profile = await fetchMe();
+      setUser(profile);
+      return { ...profile, message: data.message };
     } catch (err) {
       // surface backend message cleanly
-      throw new Error(err.response?.data?.message ?? 'Login failed')
+      throw new Error(err.response?.data?.message ?? "Login failed");
     }
   }
 
   // ── Logout ─────────────────────────────────────────────
   function logout() {
-    localStorage.removeItem('token')
-    setUser(null)
+    localStorage.removeItem("token");
+    setUser(null);
   }
 
   function getToken() {
-    return localStorage.getItem('token')
+    return localStorage.getItem("token");
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, getToken, api }}>
+    <AuthContext.Provider
+      value={{ user, loading, login, logout, getToken, api }}
+    >
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => useContext(AuthContext);
