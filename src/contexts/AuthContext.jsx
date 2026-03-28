@@ -6,8 +6,8 @@ const AuthContext = createContext();
 
 // ── Axios instance ─────────────────────────────────────
 export const api = axios.create({
-  // baseURL: 'http://localhost:5000',
-  baseURL: "https://catering-backend-qffz.onrender.com",
+  baseURL: "http://localhost:5000",
+  // baseURL: "https://catering-backend-qffz.onrender.com",
 });
 
 // Auto-attach token to every request

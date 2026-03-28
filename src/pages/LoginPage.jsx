@@ -33,9 +33,9 @@ export default function LoginPage() {
     setSelectedRole(role);
     setError("");
     const creds = {
-      user: { email: "user@tiffin.com", password: "123456" },
-      vendor_admin: { email: "vendor@tiffin.com", password: "123456" },
-      master_admin: { email: "admin@tiffin.com", password: "123456" },
+      user: { email: "user@lunch.com", password: "123456" },
+      vendor_admin: { email: "vendor@lunch.com", password: "123456" },
+      master_admin: { email: "admin@lunch.com", password: "123456" },
     };
     setEmail(creds[role].email);
     setPassword(creds[role].password);
@@ -70,21 +70,21 @@ export default function LoginPage() {
           <div className="login-logo">
             <div className="logo-mark">🍱</div>
             <div className="logo-text">
-              Tiffin<span>OS</span>
+              Lunch<span>Box</span>
             </div>
           </div>
 
           <h1 className="login-headline">
             Society-wise
             <br />
-            tiffin, <em>managed</em>
+            Orders, <em>managed</em>
             <br />
             brilliantly.
           </h1>
 
           <p className="login-sub">
             Real-time order tracking, vendor dashboards, and payment analytics —
-            all in one platform built for modern tiffin operations.
+            all in one platform built for modern lunch operations.
           </p>
         </div>
 
