@@ -446,121 +446,134 @@ export default function MyOrders() {
             <p>No orders found</p>
           </div>
         ) : (
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Date & Time</th>
-                <th>Items Ordered</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Payment</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {filtered.map((o, index) => {
-                const badge = STATUS_BADGE[o.status] || {
-                  label: o.status,
-                  color: "#888",
-                };
-                const payment = PAYMENT_BADGE[o.payment_status] || {
-                  label: o.payment_status,
-                  color: "#888",
-                  bg: "#88888820",
-                };
-
-                return (
-                  <tr
-                    onClick={() => setSelectedOrder(o)}
-                    key={o._id}
-                    style={{ opacity: o.status === "cancelled" ? 0.6 : 1 }}
-                  >
-                    {/* Sr */}
-                    <td
-                      className="td-mono"
-                      style={{ color: "var(--text-muted)", fontSize: 12 }}
-                    >
-                      {index + 1}
-                    </td>
-
-                    {/* Date & Time */}
-                    <td>
-                      <div style={{ fontWeight: 600, fontSize: 13 }}>
-                        {formatDate(o.createdAt)}
-                      </div>
-                      <div style={{ fontSize: 11, color: "var(--text-muted)" }}>
-                        {formatTime(o.createdAt)}
-                      </div>
-                    </td>
-
-                    {/* Items */}
-                    <td>
-                      {o.items?.map((item, i) => (
-                        <div
-                          key={item._id || i}
-                          style={{ fontSize: 13, marginBottom: 2 }}
-                        >
-                          <span style={{ fontWeight: 600 }}>{item.name}</span>
-                          <span
-                            style={{ color: "var(--text-muted)", fontSize: 12 }}
-                          >
-                            {" "}
-                            × {item.quantity} ·{" "}
-                            <span style={{ fontFamily: "var(--font-mono)" }}>
-                              ₹{item.total}
-                            </span>
-                          </span>
-                        </div>
-                      ))}
-                    </td>
-
-                    {/* Amount */}
-                    <td
-                      className="td-mono"
-                      style={{ fontWeight: 700, fontSize: 14 }}
-                    >
-                      ₹{o.total_amount?.toLocaleString("en-IN") || 0}
-                    </td>
-
-                    {/* Order Status */}
-                    <td>
-                      <span
-                        style={{
-                          fontSize: 11,
-                          fontWeight: 700,
-                          padding: "3px 10px",
-                          borderRadius: 20,
-                          color: "#fff",
-                          background: badge.color,
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {badge.label}
-                      </span>
-                    </td>
-
-                    {/* Payment */}
-                    <td>
-                      <span
-                        style={{
-                          fontSize: 11,
-                          fontWeight: 700,
-                          padding: "3px 10px",
-                          borderRadius: 20,
-                          whiteSpace: "nowrap",
-                          color: payment.color,
-                          background: payment.bg,
-                        }}
-                      >
-                        {payment.label}
-                      </span>
-                    </td>
+          <div className="panel-body">
+            <div className="table-wrap">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Date & Time</th>
+                    <th>Items Ordered</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Payment</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                </thead>
+
+                <tbody>
+                  {filtered.map((o, index) => {
+                    const badge = STATUS_BADGE[o.status] || {
+                      label: o.status,
+                      color: "#888",
+                    };
+                    const payment = PAYMENT_BADGE[o.payment_status] || {
+                      label: o.payment_status,
+                      color: "#888",
+                      bg: "#88888820",
+                    };
+
+                    return (
+                      <tr
+                        onClick={() => setSelectedOrder(o)}
+                        key={o._id}
+                        style={{ opacity: o.status === "cancelled" ? 0.6 : 1 }}
+                      >
+                        {/* Sr */}
+                        <td
+                          className="td-mono"
+                          style={{ color: "var(--text-muted)", fontSize: 12 }}
+                        >
+                          {index + 1}
+                        </td>
+
+                        {/* Date & Time */}
+                        <td>
+                          <div style={{ fontWeight: 600, fontSize: 13 }}>
+                            {formatDate(o.createdAt)}
+                          </div>
+                          <div
+                            style={{ fontSize: 11, color: "var(--text-muted)" }}
+                          >
+                            {formatTime(o.createdAt)}
+                          </div>
+                        </td>
+
+                        {/* Items */}
+                        <td>
+                          {o.items?.map((item, i) => (
+                            <div
+                              key={item._id || i}
+                              style={{ fontSize: 13, marginBottom: 2 }}
+                            >
+                              <span style={{ fontWeight: 600 }}>
+                                {item.name}
+                              </span>
+                              <span
+                                style={{
+                                  color: "var(--text-muted)",
+                                  fontSize: 12,
+                                }}
+                              >
+                                {" "}
+                                × {item.quantity} ·{" "}
+                                <span
+                                  style={{ fontFamily: "var(--font-mono)" }}
+                                >
+                                  ₹{item.total}
+                                </span>
+                              </span>
+                            </div>
+                          ))}
+                        </td>
+
+                        {/* Amount */}
+                        <td
+                          className="td-mono"
+                          style={{ fontWeight: 700, fontSize: 14 }}
+                        >
+                          ₹{o.total_amount?.toLocaleString("en-IN") || 0}
+                        </td>
+
+                        {/* Order Status */}
+                        <td>
+                          <span
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 700,
+                              padding: "3px 10px",
+                              borderRadius: 20,
+                              color: "#fff",
+                              background: badge.color,
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {badge.label}
+                          </span>
+                        </td>
+
+                        {/* Payment */}
+                        <td>
+                          <span
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 700,
+                              padding: "3px 10px",
+                              borderRadius: 20,
+                              whiteSpace: "nowrap",
+                              color: payment.color,
+                              background: payment.bg,
+                            }}
+                          >
+                            {payment.label}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
         )}
       </div>
       {selectedOrder && (

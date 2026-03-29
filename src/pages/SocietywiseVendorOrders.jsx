@@ -523,130 +523,142 @@ export default function SocietywiseVendorOrders() {
           )}
 
           <div className="panel-body">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th style={{ width: 40, textAlign: "center" }}>
-                    <input
-                      type="checkbox"
-                      checked={allSelected}
-                      onChange={toggleSelectAll}
-                      style={{ cursor: "pointer", width: 15, height: 15 }}
-                    />
-                  </th>
-                  <th>Order</th>
-                  <th>Customer</th>
-                  <th>Items</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                  <th>Payment</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
+            <div className="table-wrap">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th style={{ width: 40, textAlign: "center" }}>
+                      <input
+                        type="checkbox"
+                        checked={allSelected}
+                        onChange={toggleSelectAll}
+                        style={{ cursor: "pointer", width: 15, height: 15 }}
+                      />
+                    </th>
+                    <th>Order</th>
+                    <th>Customer</th>
+                    <th>Items</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Payment</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
 
-              <tbody>
-                {filteredOrders.map((o, idx) => {
-                  const isChecked = selectedOrders.some((s) => s._id === o._id);
+                <tbody>
+                  {filteredOrders.length > 0 ? (
+                    filteredOrders.map((o, idx) => {
+                      const isChecked = selectedOrders.some(
+                        (s) => s._id === o._id,
+                      );
 
-                  return (
-                    <tr
-                      key={o._id}
-                      onClick={() => setSelectedOrder(o)}
-                      style={{
-                        background: isChecked ? "#eff6ff" : undefined,
-                        transition: "background 0.15s",
-                      }}
-                    >
-                      {/* ROW CHECKBOX — stops propagation so it doesn't open modal */}
-                      <td
-                        style={{ textAlign: "center" }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleSelectOne(o);
-                        }}
-                        onChange={() => toggleSelectOne(o)}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={() => toggleSelectOne(o)}
-                          style={{ cursor: "pointer", width: 15, height: 15 }}
-                        />
-                      </td>
-                      <td className="td-mono">#{idx + 1}</td>
-
-                      <td>
-                        <div className="td-primary">
-                          {o.last_activity?.[0]?.username}
-                        </div>
-                        <div className="muted">
-                          {o.last_activity?.[0]?.mobile_no}
-                        </div>
-                        <div className="muted">
-                          {o.society?.company_name},Tower {o.society?.tower},
-                          floor {o.society?.floor}
-                        </div>
-                      </td>
-
-                      <td>
-                        {o.items?.map((item, i) => (
-                          <div
-                            key={item._id || i}
-                            style={{ fontSize: 13, marginBottom: 2 }}
+                      return (
+                        <tr
+                          key={o._id}
+                          onClick={() => setSelectedOrder(o)}
+                          style={{
+                            background: isChecked ? "#eff6ff" : undefined,
+                            transition: "background 0.15s",
+                          }}
+                        >
+                          {/* ROW CHECKBOX — stops propagation so it doesn't open modal */}
+                          <td
+                            style={{ textAlign: "center" }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleSelectOne(o);
+                            }}
+                            onChange={() => toggleSelectOne(o)}
                           >
-                            <span style={{ fontWeight: 600 }}>{item.name}</span>
-                            <span
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={() => toggleSelectOne(o)}
                               style={{
-                                color: "var(--text-muted)",
-                                fontSize: 12,
+                                cursor: "pointer",
+                                width: 15,
+                                height: 15,
                               }}
-                            >
-                              {" "}
-                              × {item.quantity} ·{" "}
-                              <span style={{ fontFamily: "var(--font-mono)" }}>
-                                ₹{item.total}
-                              </span>
-                            </span>
-                          </div>
-                        ))}
-                      </td>
+                            />
+                          </td>
+                          <td className="td-mono">#{idx + 1}</td>
 
-                      <td>₹{o.total_amount}</td>
+                          <td>
+                            <div className="td-primary">
+                              {o.last_activity?.[0]?.username}
+                            </div>
+                            <div className="muted">
+                              {o.last_activity?.[0]?.mobile_no}
+                            </div>
+                            <div className="muted">
+                              {o.society?.company_name},Tower {o.society?.tower}
+                              , floor {o.society?.floor}
+                            </div>
+                          </td>
 
-                      {/* <td>
+                          <td>
+                            {o.items?.map((item, i) => (
+                              <div
+                                key={item._id || i}
+                                style={{ fontSize: 13, marginBottom: 2 }}
+                              >
+                                <span style={{ fontWeight: 600 }}>
+                                  {item.name}
+                                </span>
+                                <span
+                                  style={{
+                                    color: "var(--text-muted)",
+                                    fontSize: 12,
+                                  }}
+                                >
+                                  {" "}
+                                  × {item.quantity} ·{" "}
+                                  <span
+                                    style={{ fontFamily: "var(--font-mono)" }}
+                                  >
+                                    ₹{item.total}
+                                  </span>
+                                </span>
+                              </div>
+                            ))}
+                          </td>
+
+                          <td>₹{o.total_amount}</td>
+
+                          {/* <td>
                         <span className={`badge badge-${o.status}`}>
                           {o.status}
                         </span>
                       </td> */}
 
-                      <td onClick={(e) => e.stopPropagation()}>
-                        {" "}
-                        {/* stop modal from opening */}
-                        <select
-                          value={o.status}
-                          onChange={(e) =>
-                            handleSingleStatusUpdate(o._id, e.target.value)
-                          }
-                          className={`badge badge-${o.status}`}
-                          style={{
-                            border: "none",
-                            cursor: "pointer",
-                            borderRadius: 6,
-                            padding: "3px 6px",
-                            fontSize: 12,
-                            fontWeight: 500,
-                            appearance: "auto",
-                          }}
-                        >
-                          <option value="ordered">ordered</option>
-                          <option value="confirmed">confirmed</option>
-                          <option value="on-the-way">on-the-way</option>
-                          <option value="delivered">delivered</option>
-                          <option value="cancelled">cancelled</option>
-                        </select>
-                      </td>
+                          <td onClick={(e) => e.stopPropagation()}>
+                            {" "}
+                            {/* stop modal from opening */}
+                            <select
+                              value={o.status}
+                              onChange={(e) =>
+                                handleSingleStatusUpdate(o._id, e.target.value)
+                              }
+                              className={`badge badge-${o.status}`}
+                              style={{
+                                border: "none",
+                                cursor: "pointer",
+                                borderRadius: 6,
+                                padding: "3px 6px",
+                                fontSize: 12,
+                                fontWeight: 500,
+                                appearance: "auto",
+                              }}
+                            >
+                              <option value="ordered">ordered</option>
+                              <option value="confirmed">confirmed</option>
+                              <option value="on-the-way">on-the-way</option>
+                              <option value="delivered">delivered</option>
+                              <option value="cancelled">cancelled</option>
+                            </select>
+                          </td>
 
-                      {/* <td>
+                          {/* <td>
                         <span
                           className={`badge ${
                             o.payment_status === "paid"
@@ -658,48 +670,59 @@ export default function SocietywiseVendorOrders() {
                         </span>
                       </td> */}
 
-                      <td onClick={(e) => e.stopPropagation()}>
-                        {o.payment_status === "paid" ? (
-                          <span className="badge badge-paid">paid</span>
-                        ) : o.payment_status === "pending" ? (
-                          <button
-                            onClick={() => handleCollectPayment(o.payment)}
-                            style={{
-                              padding: "3px 8px",
-                              borderRadius: 6,
-                              background: "#16a34a",
-                              color: "#fff",
-                              border: "none",
-                              cursor: "pointer",
-                              fontSize: 12,
-                              fontWeight: 500,
-                            }}
-                          >
-                            💵 Collect
-                          </button>
-                        ) : (
-                          <span className="badge badge-unpaid">
-                            {o.payment_status}
-                          </span>
-                        )}
-                      </td>
+                          <td onClick={(e) => e.stopPropagation()}>
+                            {o.payment_status === "paid" ? (
+                              <span className="badge badge-paid">paid</span>
+                            ) : o.payment_status === "pending" ? (
+                              <button
+                                onClick={() => handleCollectPayment(o.payment)}
+                                style={{
+                                  padding: "3px 8px",
+                                  borderRadius: 6,
+                                  background: "#16a34a",
+                                  color: "#fff",
+                                  border: "none",
+                                  cursor: "pointer",
+                                  fontSize: 12,
+                                  fontWeight: 500,
+                                }}
+                              >
+                                💵 Collect
+                              </button>
+                            ) : (
+                              <span className="badge badge-unpaid">
+                                {o.payment_status}
+                              </span>
+                            )}
+                          </td>
 
-                      <td>
-                        {new Date(o.createdAt).toLocaleString("en-GB", {
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          second: "2-digit",
-                          hour12: true,
-                        })}
+                          <td>
+                            {new Date(o.createdAt).toLocaleString("en-GB", {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              second: "2-digit",
+                              hour12: true,
+                            })}
+                          </td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan={8}
+                        style={{ textAlign: "center", padding: "20px 0" }}
+                      >
+                        No orders found.
                       </td>
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}

@@ -14,7 +14,7 @@ const ROLE_ROUTES = {
 const ROLES = [
   { id: "user", icon: "🍱", label: "User" },
   { id: "vendor_admin", icon: "🏪", label: "Vendor" },
-  { id: "master_admin", icon: "👑", label: "Master Admin" },
+  { id: "master_admin", icon: "👑", label: "Admin" },
 ];
 
 export default function LoginPage() {
@@ -32,11 +32,7 @@ export default function LoginPage() {
   const pickRole = (role) => {
     setSelectedRole(role);
     setError("");
-    const creds = {
-      user: { email: "user@lunch.com", password: "123456" },
-      vendor_admin: { email: "vendor@lunch.com", password: "123456" },
-      master_admin: { email: "admin@lunch.com", password: "123456" },
-    };
+
     setEmail(creds[role].email);
     setPassword(creds[role].password);
   };
@@ -68,9 +64,11 @@ export default function LoginPage() {
 
         <div className="login-brand">
           <div className="login-logo">
-            <div className="logo-mark">🍱</div>
+            <div className="logo-mark">
+              <img id="logo" src="/favicon-meal.png" alt="Logo" />
+            </div>
             <div className="logo-text">
-              Lunch<span>Box</span>
+              Meal<span>Box</span>
             </div>
           </div>
 

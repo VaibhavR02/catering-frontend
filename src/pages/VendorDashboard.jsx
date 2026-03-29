@@ -100,9 +100,9 @@ export default function VendorDashboard() {
 
   return (
     <AppLayout pendingCount={summary?.statusCounts?.ordered || 0}>
-      <Link to="/vendor/update" className="update-profile-link">
+      {/* <Link to="/vendor/update" className="update-profile-link">
         Update Profile
-      </Link>
+      </Link> */}
       {/* ───────── KPI CARDS ───────── */}
       <div className="metrics-grid">
         {[
@@ -159,62 +159,59 @@ export default function VendorDashboard() {
               const successRate = s.successRate || 0;
 
               return (
-                <div
-                  key={i}
-                  className={`metric-card society-card ${
-                    selectedSociety === s.societyId ? "active" : ""
-                  }`}
-                >
-                  {/* HEADER */}
-                  <div className="td-primary">
-                    <Link to={`/vendor/orders/${s.societyId}`}>
-                      {s.societyName}
-                    </Link>
-                  </div>
+                <Link key={i} to={`/vendor/orders/${s.societyId}`}>
+                  <div
+                    className={`metric-card society-card ${
+                      selectedSociety === s.societyId ? "active" : ""
+                    }`}
+                  >
+                    {/* HEADER */}
+                    <div className="td-primary">{s.societyName}</div>
 
-                  <div className="panel-subtitle">
-                    📍{" "}
-                    {`${s.societyAddress?.street}, ${s.societyAddress?.area}, ${s.societyAddress?.city}`}
-                  </div>
-
-                  {/* 💰 FINANCIALS */}
-                  <div className="society-finance">
-                    <div className="finance-item green">
-                      ₹{s.receivedAmount}
-                      <span>Received</span>
+                    <div className="panel-subtitle">
+                      📍{" "}
+                      {`${s.societyAddress?.street}, ${s.societyAddress?.area}, ${s.societyAddress?.city}`}
                     </div>
 
-                    <div className="finance-item orange">
-                      ₹{s.pendingAmount}
-                      <span>Pending</span>
+                    {/* 💰 FINANCIALS */}
+                    <div className="society-finance">
+                      <div className="finance-item green">
+                        ₹{s.receivedAmount}
+                        <span>Received</span>
+                      </div>
+
+                      <div className="finance-item orange">
+                        ₹{s.pendingAmount}
+                        <span>Pending</span>
+                      </div>
+                    </div>
+
+                    {/* 📊 STATUS */}
+                    <div className="status-flow">
+                      <span className="badge badge-pending">
+                        {s.pendingOrders}
+                      </span>
+                      <span className="badge badge-delivered">
+                        {s.successfulOrders}
+                      </span>
+                      <span className="badge badge-cancelled">
+                        {s.cancelledOrders}
+                      </span>
+                    </div>
+
+                    {/* 📈 PROGRESS */}
+                    <div className="progress-bar">
+                      <div
+                        className="progress-fill green"
+                        style={{ width: `${s.successRate}%` }}
+                      />
+                    </div>
+
+                    <div className="panel-subtitle">
+                      {s.successRate}% success • {s.totalOrders} orders
                     </div>
                   </div>
-
-                  {/* 📊 STATUS */}
-                  <div className="status-flow">
-                    <span className="badge badge-pending">
-                      {s.pendingOrders}
-                    </span>
-                    <span className="badge badge-delivered">
-                      {s.successfulOrders}
-                    </span>
-                    <span className="badge badge-cancelled">
-                      {s.cancelledOrders}
-                    </span>
-                  </div>
-
-                  {/* 📈 PROGRESS */}
-                  <div className="progress-bar">
-                    <div
-                      className="progress-fill green"
-                      style={{ width: `${s.successRate}%` }}
-                    />
-                  </div>
-
-                  <div className="panel-subtitle">
-                    {s.successRate}% success • {s.totalOrders} orders
-                  </div>
-                </div>
+                </Link>
               );
             })}
           </div>

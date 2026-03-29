@@ -157,6 +157,11 @@ body {
   background: var(--border-strong);
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 /* ── ANIMATIONS ── */
 @keyframes fadeUp {
   from {
@@ -280,16 +285,9 @@ body {
   margin-bottom: 48px;
 }
 
-.logo-mark {
-  width: 40px;
-  height: 40px;
-  background: var(--ember);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  box-shadow: var(--glow-ember);
+#logo {
+  width: 30px;
+  height: 30px;
 }
 
 .logo-text {
@@ -526,8 +524,10 @@ body {
 }
 
 /* ══════════════════════════════════════
-      SIDEBAR
+   SIDEBAR — Desktop / Tablet / Mobile
    ══════════════════════════════════════ */
+
+/* ── BASE (Desktop) ── */
 .sidebar {
   width: 232px;
   flex-shrink: 0;
@@ -541,13 +541,19 @@ body {
   overflow-y: auto;
   transition:
     background 0.25s,
-    border-color 0.25s;
+    border-color 0.25s,
+    left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
 }
 
 .sidebar-top {
   padding: 20px 16px;
   border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
+
 .sidebar-logo {
   display: flex;
   align-items: center;
@@ -570,7 +576,6 @@ body {
 .nav-section {
   margin-bottom: 24px;
 }
-
 .nav-section-title {
   font-size: 10px;
   font-weight: 700;
@@ -640,6 +645,82 @@ body {
 .sidebar-bottom {
   padding: 12px 10px;
   border-top: 1px solid var(--border-subtle);
+}
+
+/* ── Close btn — hidden on desktop ── */
+.sidebar-close-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* ── Hamburger — hidden on desktop ── */
+.hamburger-btn {
+  display: none;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.hamburger-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-base);
+}
+
+/* ── Overlay — hidden by default ── */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  backdrop-filter: blur(2px);
+}
+.sidebar-overlay.active {
+  display: block;
+}
+
+/* ── Tablet (900px) ── */
+@media (max-width: 900px) {
+  .sidebar {
+    position: fixed;
+    left: -232px; /* off screen */
+    top: 0;
+    height: 100vh;
+    box-shadow: none;
+  }
+  .sidebar.sidebar-mobile-open {
+    left: 0;
+    box-shadow: var(--shadow-xl);
+  }
+  .sidebar-close-btn {
+    display: block;
+  }
+  .hamburger-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ── Mobile (480px) — slightly narrower sidebar ── */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 200px;
+    left: -200px;
+  }
+  .topbar-date {
+    display: none;
+  } /* hide date on small screens to save space */
 }
 
 .user-card {
@@ -932,10 +1013,18 @@ body {
   padding: 20px;
 }
 
-/* ── TABLE ── */
+/* ── TABLE SCROLL WRAPPER ── */
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+}
+
+/* remove the broken overflow from the table itself */
 .data-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px; /* forces scroll instead of squishing */
 }
 
 .data-table thead th {
@@ -1126,6 +1215,7 @@ body {
 .toolbar {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
 }
@@ -1465,9 +1555,9 @@ body {
   .login-visual {
     display: none;
   }
-  .sidebar {
+  /* .sidebar {
     display: none;
-  }
+  } */
   .main-area {
     margin-left: 0;
   }
@@ -1837,6 +1927,26 @@ body {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 12px;
+}
+
+.status-count-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+/* ── Tablet ── */
+@media (max-width: 900px) {
+  .status-count-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .status-count-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .count-card {

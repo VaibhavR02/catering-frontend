@@ -40,7 +40,7 @@ function PageLoader() {
           fontFamily: "var(--font-display)",
         }}
       >
-        Loading LunchBox…
+        Loading MealBox…
       </p>
     </div>
   );

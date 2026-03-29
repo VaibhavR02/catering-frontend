@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
 import { useTheme } from "../contexts/ThemeContext";
-
+import { useState } from "react";
 const NAVS = {
   user: [
     { path: "/user/dashboard", icon: "⊞", label: "Dashboard" },
@@ -15,14 +15,15 @@ const NAVS = {
   ],
   vendor_admin: [
     { path: "/vendor/dashboard", icon: "⊞", label: "Dashboard" },
-    {
-      path: "/vendor/orders",
-      icon: "📦",
-      label: "Today's Orders",
-      badge: "live",
-    },
-    { path: "/vendor/payments", icon: "₹", label: "Payments" },
-    { path: "/vendor/reports", icon: "📊", label: "Reports" },
+    // {
+    //   path: "/vendor/orders",
+    //   icon: "📦",
+    //   label: "Today's Orders",
+    //   badge: "live",
+    // },
+    // { path: "/vendor/payments", icon: "₹", label: "Payments" },
+    // { path: "/vendor/reports", icon: "📊", label: "Reports" },
+    { path: "/vendor/update", icon: "👤", label: "Profile" },
   ],
   master_admin: [
     { path: "/admin/dashboard", icon: "⊞", label: "Dashboard" },
@@ -41,7 +42,7 @@ const ROLE_META = {
 
 const TITLES = {
   "/user/dashboard": { title: "My Dashboard", sub: "Your lunch overview" },
-  "/user/order": { title: "Order Lunch", sub: "Place today's order" },
+  "/user/order": { title: "Order Meal", sub: "Place today's order" },
   "/user/my-orders": { title: "My Orders", sub: "Order history & payments" },
   "/user/profile": { title: "My Profile", sub: "Account & settings" },
   "/vendor/dashboard": {
@@ -74,112 +75,30 @@ const TITLES = {
 };
 
 // export default function AppLayout({ children, pendingCount = 0 }) {
-//   const { user, logout }       = useAuth()
-//   const toast                  = useToast()
-//   const navigate               = useNavigate()
-//   const location               = useLocation()
-//   const { theme, toggleTheme } = useTheme()
+//   const { user, logout } = useAuth();
+//   const toast = useToast();
+//   const navigate = useNavigate();
+//   const location = useLocation();
+//   const { theme, toggleTheme } = useTheme();
 
-//   const navItems = NAVS[user?.user_type]      ?? []
-//   const meta     = ROLE_META[user?.user_type] ?? {}
-//   const pageInfo = TITLES[location.pathname] ?? { title: 'LunchBox', sub: '' }
+//   // FIX: use user_type instead of role
+//   const navItems = NAVS[user?.user_type] ?? [];
+//   const meta = ROLE_META[user?.user_type] ?? {};
+
+//   const pageInfo = TITLES[location.pathname] ?? { title: "MealBox", sub: "" };
 
 //   const doLogout = () => {
-//     logout()
-//     toast.info('Signed out successfully')
-//     navigate('/login')
-//   }
+//     logout();
+//     toast.info("Signed out successfully");
+//     navigate("/login");
+//   };
 
-//   const dateStr = new Date().toLocaleDateString('en-IN', {
-//     weekday: 'short', day: 'numeric', month: 'short', year: 'numeric',
-//   })
-
-//   return (
-//     <div className="app-shell">
-//       <aside className="sidebar">
-//         <div className="sidebar-top">
-//           <div className="sidebar-logo">
-//             <div className="logo-mark">🍱</div>
-//             <div className="logo-text">Lunch<span>Box</span></div>
-//           </div>
-//         </div>
-
-//         <nav className="sidebar-nav">
-//           <div className="nav-section">
-//             <div className="nav-section-title">Navigation</div>
-//             {navItems.map(item => (
-//               <button
-//                 key={item.path}
-//                 className={`nav-item ${location.pathname === item.path ? 'active' : ''}`}
-//                 onClick={() => navigate(item.path)}
-//               >
-//                 <span style={{ fontSize: 15, width: 18, textAlign: 'center' }}>{item.icon}</span>
-//                 {item.label}
-//                 {item.badge === 'live' && pendingCount > 0 && (
-//                   <span className="nav-badge">{pendingCount}</span>
-//                 )}
-//               </button>
-//             ))}
-//           </div>
-
-//           <div className="nav-section">
-//             <div className="nav-section-title">System</div>
-//             <button className="nav-item" onClick={doLogout}>
-//               <span style={{ fontSize: 15, width: 18, textAlign: 'center' }}>⏻</span>
-//               Sign Out
-//             </button>
-//           </div>
-//         </nav>
-
-//         <div className="sidebar-bottom">
-//           <div className="user-card">
-//             <div className={`user-avatar ${meta.avatarClass}`}>
-//               {user?.name?.[0] ?? '?'}
-//             </div>
-//             <div className="user-info">
-//               <div className="user-name">{user?.name?.split(' ')[0] ?? 'User'}</div>
-//               <div className="user-role">{meta.label}</div>
-//             </div>
-//           </div>
-//         </div>
-//       </aside>
-
-//       <div className="main-area">
-//         <header className="topbar">
-//           <div className="topbar-left">
-//             <h1>{pageInfo.title}</h1>
-//             <p>{pageInfo.sub}</p>
-//           </div>
-//           <div className="topbar-right">
-//             <div className="topbar-date">{dateStr}</div>
-
-//             <button
-//               className="theme-toggle"
-//               onClick={toggleTheme}
-//               title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-//               aria-label="Toggle theme"
-//             >
-//               <span className={`theme-toggle-knob ${theme}`}>
-//                 {theme === 'light' ? '☀️' : '🌙'}
-//               </span>
-//             </button>
-
-//             <div className="notif-btn">
-//               <button className="btn-icon" title="Notifications">🔔</button>
-//               {pendingCount > 0 && <span className="notif-dot" />}
-//             </div>
-//           </div>
-//         </header>
-
-//         <main className="page-content animate-fadein">
-//           {children}
-//         </main>
-//       </div>
-//     </div>
-//   )
-// }
-
-// src/layouts/AppLayout.jsx
+//   const dateStr = new Date().toLocaleDateString("en-IN", {
+//     weekday: "short",
+//     day: "numeric",
+//     month: "short",
+//     year: "numeric",
+//   });
 
 export default function AppLayout({ children, pendingCount = 0 }) {
   const { user, logout } = useAuth();
@@ -188,11 +107,11 @@ export default function AppLayout({ children, pendingCount = 0 }) {
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
 
-  // FIX: use user_type instead of role
+  const [sidebarOpen, setSidebarOpen] = useState(false); // ← add this
+
   const navItems = NAVS[user?.user_type] ?? [];
   const meta = ROLE_META[user?.user_type] ?? {};
-
-  const pageInfo = TITLES[location.pathname] ?? { title: "LunchBox", sub: "" };
+  const pageInfo = TITLES[location.pathname] ?? { title: "MealBox", sub: "" };
 
   const doLogout = () => {
     logout();
@@ -207,36 +126,52 @@ export default function AppLayout({ children, pendingCount = 0 }) {
     year: "numeric",
   });
 
+  const handleNav = (path) => {
+    navigate(path);
+    setSidebarOpen(false); // close on navigate
+  };
   return (
     <div className="app-shell">
-      <aside className="sidebar">
+      {/* ── MOBILE OVERLAY ── */}
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay active"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      <aside className={`sidebar ${sidebarOpen ? "sidebar-mobile-open" : ""}`}>
         <div className="sidebar-top">
           <div className="sidebar-logo">
-            <div className="logo-mark">🍱</div>
+            <div className="logo-mark">
+              <img id="logo" src="/favicon-meal.png" alt="Logo" />
+            </div>
             <div className="logo-text">
-              Lunch<span>Box</span>
+              Meal<span>Box</span>
             </div>
           </div>
+          {/* ── CLOSE button (mobile only) ── */}
+          <button
+            className="sidebar-close-btn"
+            onClick={() => setSidebarOpen(false)}
+          >
+            ✕
+          </button>
         </div>
 
         <nav className="sidebar-nav">
           <div className="nav-section">
             <div className="nav-section-title">Navigation</div>
-
             {navItems.map((item) => (
               <button
                 key={item.path}
-                className={`nav-item ${
-                  location.pathname === item.path ? "active" : ""
-                }`}
-                onClick={() => navigate(item.path)}
+                className={`nav-item ${location.pathname === item.path ? "active" : ""}`}
+                onClick={() => handleNav(item.path)}
               >
                 <span style={{ fontSize: 15, width: 18, textAlign: "center" }}>
                   {item.icon}
                 </span>
-
                 {item.label}
-
                 {item.badge === "live" && pendingCount > 0 && (
                   <span className="nav-badge">{pendingCount}</span>
                 )}
@@ -246,7 +181,6 @@ export default function AppLayout({ children, pendingCount = 0 }) {
 
           <div className="nav-section">
             <div className="nav-section-title">System</div>
-
             <button className="nav-item" onClick={doLogout}>
               <span style={{ fontSize: 15, width: 18, textAlign: "center" }}>
                 ⏻
@@ -261,10 +195,8 @@ export default function AppLayout({ children, pendingCount = 0 }) {
             <div className={`user-avatar ${meta.avatarClass}`}>
               {user?.username?.[0] ?? "?"}
             </div>
-
             <div className="user-info">
               <div className="user-name">{user?.username ?? "User"}</div>
-
               <div className="user-role">{meta.label}</div>
             </div>
           </div>
@@ -273,30 +205,36 @@ export default function AppLayout({ children, pendingCount = 0 }) {
 
       <div className="main-area">
         <header className="topbar">
-          <div className="topbar-left">
-            <h1>{pageInfo.title}</h1>
-            <p>{pageInfo.sub}</p>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            {/* ── HAMBURGER (mobile only) ── */}
+            <button
+              className="hamburger-btn"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open menu"
+            >
+              ☰
+            </button>
+            <div className="topbar-left">
+              <h1>{pageInfo.title}</h1>
+              <p>{pageInfo.sub}</p>
+            </div>
           </div>
 
           <div className="topbar-right">
             <div className="topbar-date">{dateStr}</div>
-
             <button
               className="theme-toggle"
               onClick={toggleTheme}
               title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
-              aria-label="Toggle theme"
             >
               <span className={`theme-toggle-knob ${theme}`}>
                 {theme === "light" ? "☀️" : "🌙"}
               </span>
             </button>
-
             <div className="notif-btn">
               <button className="btn-icon" title="Notifications">
                 🔔
               </button>
-
               {pendingCount > 0 && <span className="notif-dot" />}
             </div>
           </div>

@@ -6,7 +6,7 @@ import { useToast } from "../context/ToastContext";
 const ROLES = [
   { id: "user", icon: "🍱", label: "User" },
   { id: "vendor_admin", icon: "🏪", label: "Vendor" },
-  { id: "master_admin", icon: "👑", label: "Master Admin" },
+  { id: "master_admin", icon: "👑", label: "Admin" },
 ];
 
 const ROLE_ROUTES = {
@@ -57,7 +57,7 @@ export default function Login() {
           <div className="login-logo">
             <div className="logo-mark">🍱</div>
             <div className="logo-text">
-              Lunch<span>Box</span>
+              Meal<span>Box</span>
             </div>
           </div>
 

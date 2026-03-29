@@ -330,7 +330,7 @@ export default function UpdateVendor() {
           {/* Active toggle */}
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>
-              Store Active
+              Restaurant Active
             </span>
             <div
               onClick={() => set("isActive", !form.isActive)}

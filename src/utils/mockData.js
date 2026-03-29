@@ -203,7 +203,7 @@ export const VENDORS = [
   },
   {
     id: "v2",
-    name: "Lunch Express",
+    name: "Meal Express",
     vendorName: "Meena Tai",
     delivered: 4,
     pending: 3,
