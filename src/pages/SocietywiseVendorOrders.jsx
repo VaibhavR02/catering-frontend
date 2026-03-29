@@ -733,17 +733,17 @@ export default function SocietywiseVendorOrders() {
             {/* HEADER */}
             <div className="modal-header">
               <div>
-                <h3>Order #{selectedOrder._id}</h3>
-                <div className="muted">
+                <h4>Order #{selectedOrder._id}</h4>
+                <span className="muted">
+                  <span className={`badge badge-${selectedOrder.status}`}>
+                    {selectedOrder.status}
+                  </span>
+                  &nbsp;|&nbsp;{" "}
                   {new Date(selectedOrder.createdAt).toLocaleString()}
-                </div>
+                </span>
               </div>
 
               <div className="modal-header-right">
-                <span className={`badge badge-${selectedOrder.status}`}>
-                  {selectedOrder.status}
-                </span>
-
                 <button onClick={() => setSelectedOrder(null)}>✕</button>
               </div>
             </div>

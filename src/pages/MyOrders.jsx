@@ -584,15 +584,15 @@ export default function MyOrders() {
               <div>
                 <h3>Order #{selectedOrder._id}</h3>
                 <div className="muted">
+                  <span className={`badge badge-${selectedOrder.status}`}>
+                    {selectedOrder.status}
+                  </span>
+                  &nbsp;|&nbsp;
                   {new Date(selectedOrder.createdAt).toLocaleString()}
                 </div>
               </div>
 
               <div className="modal-header-right">
-                <span className={`badge badge-${selectedOrder.status}`}>
-                  {selectedOrder.status}
-                </span>
-
                 <button onClick={() => setSelectedOrder(null)}>✕</button>
               </div>
             </div>
