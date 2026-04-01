@@ -581,20 +581,28 @@ export default function MyOrders() {
           <div className="modal modal-lg" onClick={(e) => e.stopPropagation()}>
             {/* HEADER */}
             <div className="modal-header">
-              <div>
-                <h3>Order #{selectedOrder._id}</h3>
-                <div className="muted">
-                  <span className={`badge badge-${selectedOrder.status}`}>
+              <div className="modal-header-left">
+                <h5 className="order-id">Order #{selectedOrder._id}</h5>
+
+                <div className="order-meta">
+                  <span className={`status-badge ${selectedOrder.status}`}>
                     {selectedOrder.status}
                   </span>
-                  &nbsp;|&nbsp;
-                  {new Date(selectedOrder.createdAt).toLocaleString()}
+
+                  <span className="divider">•</span>
+
+                  <span className="order-date">
+                    {new Date(selectedOrder.createdAt).toLocaleString()}
+                  </span>
                 </div>
               </div>
 
-              <div className="modal-header-right">
-                <button onClick={() => setSelectedOrder(null)}>✕</button>
-              </div>
+              <button
+                className="close-btn"
+                onClick={() => setSelectedOrder(null)}
+              >
+                ✕
+              </button>
             </div>
 
             <div className="modal-body grid-60-40">
@@ -611,6 +619,21 @@ export default function MyOrders() {
                     </div>
                     <div className="muted">
                       {selectedOrder.last_activity?.[0]?.mobile_no}
+                    </div>
+                    <div className="muted">
+                      {selectedOrder?.society?.company_name},
+                      {selectedOrder?.society?.tower},
+                      {selectedOrder?.society?.floor}
+                    </div>
+                    <div className="muted">
+                      {[
+                        selectedOrder?.society?.society_name,
+                        selectedOrder?.society?.society_address?.street,
+                        selectedOrder?.society?.society_address?.area,
+                        selectedOrder?.society?.society_address?.city,
+                      ]
+                        .filter(Boolean)
+                        .join(", ")}
                     </div>
                   </div>
                 </div>

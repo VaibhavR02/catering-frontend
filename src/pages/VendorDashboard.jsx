@@ -141,10 +141,20 @@ export default function VendorDashboard() {
       <div className="panel">
         <div className="panel-header">
           <div className="panel-title">🏢 Society Performance</div>
-          <div className="search-bar">
+          {/* <div className="search-bar">
             <input
               type="text"
+              className=""
               placeholder="🔍 Search Society..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div> */}
+          <div className="search-wrap">
+            <span className="search-icon">🔍</span>
+            <input
+              className="search-input"
+              placeholder="Search by Society..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />

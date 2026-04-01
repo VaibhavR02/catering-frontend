@@ -19,7 +19,8 @@ export default function NewOrder() {
   const [selVendor, setSelVendor] = useState(null);
   const [cart, setCart] = useState({});
   const [payMethod, setPayMethod] = useState("cash_on_delivery");
-  const [note, setNote] = useState("");
+  // const [note, setNote] = useState("");
+  const [delivery_instructions, setDeliveryInstructions] = useState("");
   const [placing, setPlacing] = useState(false);
   const [vegFilter, setVegFilter] = useState("all"); // all | veg | nonveg
   const [societySearch, setSocietySearch] = useState("");
@@ -167,6 +168,7 @@ export default function NewOrder() {
         society: selSociety._id,
         items,
         payment_method: payMethod,
+        delivery_instructions,
       });
 
       // ── COD ──
@@ -207,11 +209,15 @@ export default function NewOrder() {
             );
             // ✅ payment done toast before redirect
             toast.success("Payment done! Redirecting to orders...");
-            setTimeout(() => navigate("/user/my-orders"), 1500); // small delay so toast is visible
+            // setTimeout(() =>
+            navigate("/user/my-orders");
+            // , 1500); // small delay so toast is visible
           } catch (err) {
             setPaymentInProgress(false); // re-enable on verify fail
             toast.error(
-              err?.response?.data?.message || "Payment verification failed",
+              err?.response?.data?.message ||
+                err?.response?.data?.error ||
+                "Payment verification failed",
             );
             navigate("/user/my-orders");
           }
@@ -1049,12 +1055,12 @@ export default function NewOrder() {
                       </div>
                       <div className="no-pay-grid">
                         {[
-                          {
-                            key: "cash_on_delivery",
-                            icon: "💵",
-                            label: "Cash on Delivery",
-                            sub: "Pay when delivered",
-                          },
+                          // {
+                          //   key: "cash_on_delivery",
+                          //   icon: "💵",
+                          //   label: "Cash on Delivery",
+                          //   sub: "Pay when delivered",
+                          // },
                           {
                             key: "online",
                             icon: "📱",
@@ -1080,8 +1086,8 @@ export default function NewOrder() {
                       className="no-note"
                       rows={2}
                       placeholder="Add delivery instructions..."
-                      value={note}
-                      onChange={(e) => setNote(e.target.value)}
+                      value={delivery_instructions}
+                      onChange={(e) => setDeliveryInstructions(e.target.value)}
                       style={{ marginTop: 12 }}
                     />
                   </>

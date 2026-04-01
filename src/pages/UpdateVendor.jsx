@@ -315,7 +315,14 @@ export default function UpdateVendor() {
             marginBottom: 24,
           }}
         >
-          <div>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <h2
               style={{ fontSize: 20, fontWeight: 800, letterSpacing: "-0.5px" }}
             >
