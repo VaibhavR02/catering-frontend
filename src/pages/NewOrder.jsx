@@ -18,7 +18,7 @@ export default function NewOrder() {
   const [selSociety, setSelSociety] = useState(null);
   const [selVendor, setSelVendor] = useState(null);
   const [cart, setCart] = useState({});
-  const [payMethod, setPayMethod] = useState("cash_on_delivery");
+  const [payMethod, setPayMethod] = useState(null);
   // const [note, setNote] = useState("");
   const [delivery_instructions, setDeliveryInstructions] = useState("");
   const [placing, setPlacing] = useState(false);
@@ -1127,7 +1127,8 @@ export default function NewOrder() {
                     !selVendor ||
                     cartItems.length === 0 ||
                     placing ||
-                    paymentInProgress // ← add this
+                    paymentInProgress || // ← add this
+                    !payMethod // require payment method selection
                   }
                 >
                   {placing ? (
