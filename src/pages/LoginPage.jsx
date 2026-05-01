@@ -1,6 +1,6 @@
 // src/pages/LoginPage.jsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
 
@@ -12,9 +12,9 @@ const ROLE_ROUTES = {
 };
 
 const ROLES = [
-  { id: "user", icon: "🍱", label: "User" },
-  { id: "vendor_admin", icon: "🏪", label: "Vendor" },
-  { id: "master_admin", icon: "👑", label: "Admin" },
+  // { id: "user", icon: "🍱", label: "User" },
+  // { id: "vendor_admin", icon: "🏪", label: "Vendor" },
+  // { id: "master_admin", icon: "👑", label: "Admin" },
 ];
 
 export default function LoginPage() {
@@ -88,7 +88,7 @@ export default function LoginPage() {
 
         <div className="login-stats">
           {[
-            { value: "12K+", label: "Daily Tiffins" },
+            { value: "12K+", label: "Daily Orders" },
             { value: "98%", label: "On-time Rate" },
             { value: "₹2.4L", label: "Monthly GMV" },
           ].map((s) => (
@@ -104,9 +104,9 @@ export default function LoginPage() {
       <div className="login-panel">
         <div className="login-form-wrap">
           <h2 className="login-form-title">Sign in</h2>
-          <p className="login-form-sub">
+          {/* <p className="login-form-sub">
             Choose your role and enter your credentials
-          </p>
+          </p> */}
 
           {/* Role selector */}
           <div className="role-selector">
@@ -217,9 +217,15 @@ export default function LoginPage() {
               textAlign: "center",
             }}
           >
-            {/* <p style={{ fontSize: 11.5, color: 'var(--text-muted)' }}>
-              Session stored in localStorage · JWT auth
-            </p> */}
+            <p style={{ fontSize: 11.5, color: "var(--text-muted)" }}>
+              New to MealBox?{" "}
+              <Link
+                to="/signup"
+                style={{ color: "var(--ember)", fontWeight: 500 }}
+              >
+                Sign up here
+              </Link>
+            </p>
           </div>
         </div>
       </div>

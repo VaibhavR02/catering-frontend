@@ -1055,18 +1055,18 @@ export default function NewOrder() {
                       </div>
                       <div className="no-pay-grid">
                         {[
-                          // {
-                          //   key: "cash_on_delivery",
-                          //   icon: "💵",
-                          //   label: "Cash on Delivery",
-                          //   sub: "Pay when delivered",
-                          // },
                           {
-                            key: "online",
-                            icon: "📱",
-                            label: "Pay Online",
-                            sub: "UPI / Card / Netbanking",
+                            key: "cash_on_delivery",
+                            icon: "💵",
+                            label: "Cash on Delivery",
+                            sub: "Pay when delivered",
                           },
+                          // {
+                          //   key: "online",
+                          //   icon: "📱",
+                          //   label: "Pay Online",
+                          //   sub: "UPI / Card / Netbanking",
+                          // },
                         ].map((pm) => (
                           <button
                             key={pm.key}

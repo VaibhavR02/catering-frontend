@@ -11,6 +11,7 @@ import UserProfile from "./pages/UserProfile";
 import NewOrder from "./pages/NewOrder";
 import SocietywiseVendorOrders from "./pages/SocietywiseVendorOrders";
 import UpdateVendor from "./pages/UpdateVendor";
+import SignUp from "./screens/SignUp";
 
 const Placeholder = ({ title }) => (
   <AppLayout>
@@ -37,6 +38,14 @@ export default function App() {
               element={
                 <PublicRoute>
                   <LoginPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <PublicRoute>
+                  <SignUp />
                 </PublicRoute>
               }
             />

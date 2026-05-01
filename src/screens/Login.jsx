@@ -41,7 +41,7 @@ export default function Login() {
       success(`Welcome back, ${user.name.split(" ")[0]}! 🎉`);
       navigate(ROLE_ROUTES[user.user_type]);
     } catch (err) {
-      error(err.message);
+      error(err.response.data.message || err.response.data.error);
     } finally {
       setLoading(false);
     }
@@ -76,7 +76,7 @@ export default function Login() {
 
         <div className="login-stats">
           {[
-            { value: "12K+", label: "Daily Tiffins" },
+            { value: "12K+", label: "Daily Orders" },
             { value: "98%", label: "On-time Rate" },
             { value: "₹2.4L", label: "Monthly GMV" },
           ].map((s) => (
