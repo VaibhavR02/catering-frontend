@@ -12,6 +12,8 @@ import NewOrder from "./pages/NewOrder";
 import SocietywiseVendorOrders from "./pages/SocietywiseVendorOrders";
 import UpdateVendor from "./pages/UpdateVendor";
 import SignUp from "./screens/SignUp";
+import Dashboard from "./admin/Dashboard";
+import OrdersAnalytics from "./admin/OrderAnalytics";
 
 const Placeholder = ({ title }) => (
   <AppLayout>
@@ -50,6 +52,17 @@ export default function App() {
               }
             />
 
+            {/* --------------------admin---------------------- */}
+            <Route
+              path="/admin/dashboard"
+              element={
+                <ProtectedRoute role="master_admin">
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            {/* --------------------admin---------------------- */}
+
             <Route
               path="/user/dashboard"
               element={
@@ -58,6 +71,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+
             <Route
               path="/user/order"
               element={
@@ -168,7 +182,7 @@ export default function App() {
               path="/admin/reports"
               element={
                 <ProtectedRoute role="master_admin">
-                  <Placeholder title="📊 Analytics" />
+                  <OrdersAnalytics />
                 </ProtectedRoute>
               }
             />
