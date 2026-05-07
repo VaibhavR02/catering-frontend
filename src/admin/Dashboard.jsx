@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./admin.css";
 import AppLayout from "../components/AppLayout";
+import Loading from "../components/Loading";
 
 const API_URL =
   "https://catering-backend-qffz.onrender.com/api/v1/admin/dashboard";
@@ -81,11 +82,7 @@ export default function Dashboard() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="dashboard">
-        <div className="dash-loading">Loading dashboard…</div>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (error || !data) {
