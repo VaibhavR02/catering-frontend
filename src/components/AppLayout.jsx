@@ -65,7 +65,7 @@ const TITLES = {
   },
   "/admin/vendors": {
     title: "Vendor Performance",
-    sub: "Delivery & payment tracking",
+    sub: "Manage Vendors",
   },
   "/admin/societies": {
     title: "Societies",

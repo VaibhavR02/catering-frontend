@@ -1,16 +1,8 @@
-// import React from "react";
-
-// const VendorManagement = () => {
-//   return <div>VendorManagement</div>;
-// };
-
-// export default VendorManagement;
-
 import React, { useCallback, useEffect, useReducer, useState } from "react";
 import AppLayout from "../components/AppLayout";
 import { api } from "../contexts/AuthContext";
+import { useToast } from "../contexts/ToastContext";
 
-/* ───────── REDUCER ───────── */
 const initialState = {
   vendors: [],
   pagination: {},
@@ -18,6 +10,8 @@ const initialState = {
   error: "",
   selectedVendor: null,
   selectedVendorLoading: false,
+  toggleLoadingId: null,
+  deleteItemLoadingId: null,
 };
 
 const reducer = (state, action) => {
@@ -52,6 +46,18 @@ const reducer = (state, action) => {
           v._id === action.payload ? { ...v, isActive: !v.isActive } : v,
         ),
       };
+    case "TOGGLE_VENDOR_REQUEST":
+      return {
+        ...state,
+        toggleLoadingId: action.payload,
+      };
+
+    case "TOGGLE_VENDOR_FINISH":
+      return {
+        ...state,
+        toggleLoadingId: null,
+      };
+
     case "DELETE_VENDOR":
       return {
         ...state,
@@ -64,24 +70,52 @@ const reducer = (state, action) => {
           v._id === action.payload._id ? action.payload : v,
         ),
       };
+
+    case "DELETE_ITEM_REQUEST":
+      return {
+        ...state,
+        deleteItemLoadingId: action.payload,
+      };
+
+    case "DELETE_ITEM_SUCCESS":
+      return {
+        ...state,
+        deleteItemLoadingId: null,
+        selectedVendor: {
+          ...state.selectedVendor,
+          vendor: {
+            ...state.selectedVendor.vendor,
+            items: state.selectedVendor.vendor.items.filter(
+              (item) => item._id !== action.payload,
+            ),
+          },
+        },
+      };
+
+    case "DELETE_ITEM_FAIL":
+      return {
+        ...state,
+        deleteItemLoadingId: null,
+      };
+
     default:
       return state;
   }
 };
 
 /* ───────── TOAST HOOK ───────── */
-function useToast() {
-  const [toasts, setToasts] = useState([]);
-  const show = (message, type = "info") => {
-    const id = Date.now();
-    setToasts((prev) => [...prev, { id, message, type }]);
-    setTimeout(
-      () => setToasts((prev) => prev.filter((t) => t.id !== id)),
-      3500,
-    );
-  };
-  return { toasts, show };
-}
+// function useToast() {
+//   const [toasts, setToasts] = useState([]);
+//   const show = (message, type = "info") => {
+//     const id = Date.now();
+//     setToasts((prev) => [...prev, { id, message, type }]);
+//     setTimeout(
+//       () => setToasts((prev) => prev.filter((t) => t.id !== id)),
+//       3500,
+//     );
+//   };
+//   return { toasts, show };
+// }
 
 /* ───────── HELPERS ───────── */
 function initials(name = "") {
@@ -121,9 +155,12 @@ export default function VendorManagement() {
     error,
     selectedVendor,
     selectedVendorLoading,
+    toggleLoadingId,
+    deleteItemLoadingId,
   } = state;
 
-  const { toasts, show: showToast } = useToast();
+  //   const { toasts, show: showToast } = useToast();
+  const toast = useToast();
 
   /* ── filters / modals ── */
   const [search, setSearch] = useState("");
@@ -182,16 +219,41 @@ export default function VendorManagement() {
   };
 
   /* ───────── TOGGLE ACTIVE ───────── */
+  //   const handleToggle = async (vendor) => {
+  //     try {
+  //       await api.put(`/api/v1/admin/vendors/toggle/${vendor._id}`);
+  //       dispatch({ type: "TOGGLE_VENDOR", payload: vendor._id });
+  //       toast(
+  //         vendor.isActive ? "⏸ Vendor deactivated" : "✅ Vendor activated",
+  //         vendor.isActive ? "error" : "success",
+  //       );
+  //     } catch {
+  //       toast("Failed to update status", "error");
+  //     }
+  //   };
+
   const handleToggle = async (vendor) => {
     try {
-      await api.put(`/api/v1/admin/vendors/toggle/${vendor._id}`);
-      dispatch({ type: "TOGGLE_VENDOR", payload: vendor._id });
-      showToast(
-        vendor.isActive ? "⏸ Vendor deactivated" : "✅ Vendor activated",
-        vendor.isActive ? "error" : "success",
+      dispatch({
+        type: "TOGGLE_VENDOR_REQUEST",
+        payload: vendor._id,
+      });
+
+      const response = await api.put(
+        `/api/v1/admin/vendors/toggle/${vendor._id}`,
       );
+
+      dispatch({ type: "TOGGLE_VENDOR", payload: vendor._id });
+      //   console.log(response);
+      const message =
+        response.data.message ||
+        (vendor.isActive ? "Vendor deactivated" : "Vendor activated");
+      const activeStatus = response.data.isActive ? "error" : "success";
+      toast.success(message, activeStatus);
     } catch {
-      showToast("Failed to update status", "error");
+      toast.error("Failed to update status", "error");
+    } finally {
+      dispatch({ type: "TOGGLE_VENDOR_FINISH" });
     }
   };
 
@@ -202,10 +264,10 @@ export default function VendorManagement() {
     try {
       await api.delete(`/api/v1/admin/vendors/${deleteTarget._id}`);
       dispatch({ type: "DELETE_VENDOR", payload: deleteTarget._id });
-      showToast("🗑 Vendor deleted permanently", "error");
-      closeModal();
+      toast.success("🗑 Vendor deleted permanently", "error");
+      closeModal("delete");
     } catch {
-      showToast("Failed to delete vendor", "error");
+      toast.error("Failed to delete vendor", "error");
     } finally {
       setActionLoading(false);
     }
@@ -227,23 +289,44 @@ export default function VendorManagement() {
         payload,
       );
       dispatch({ type: "UPDATE_VENDOR", payload: data.data });
-      showToast("✅ Vendor updated successfully", "success");
-      closeModal();
+      toast.success("✅ Vendor updated successfully", "success");
+      closeModal("edit");
     } catch {
-      showToast("Failed to update vendor", "error");
+      toast.error("Failed to update vendor", "error");
     } finally {
       setActionLoading(false);
     }
   };
 
   /* ───────── DELETE ITEM ───────── */
+  //   const handleDeleteItem = async (vendorId, itemId) => {
+  //     try {
+  //       await api.delete(`/api/v1/admin/vendors/${vendorId}/item/${itemId}`);
+  //       toast.success("🗑 Menu item removed", "success");
+  //       fetchVendorById(vendorId);
+  //     } catch {
+  //       toast.error("Failed to remove item", "error");
+  //     }
+  //   };
+
   const handleDeleteItem = async (vendorId, itemId) => {
     try {
+      dispatch({
+        type: "DELETE_ITEM_REQUEST",
+        payload: itemId,
+      });
+
       await api.delete(`/api/v1/admin/vendors/${vendorId}/item/${itemId}`);
-      showToast("🗑 Menu item removed", "success");
-      fetchVendorById(vendorId);
+
+      dispatch({
+        type: "DELETE_ITEM_SUCCESS",
+        payload: itemId,
+      });
+
+      toast.success("🗑 Menu item removed", "success");
     } catch {
-      showToast("Failed to remove item", "error");
+      dispatch({ type: "DELETE_ITEM_FAIL" });
+      toast.error("Failed to remove item", "error");
     }
   };
 
@@ -272,7 +355,7 @@ export default function VendorManagement() {
     setModal("delete");
   };
 
-  const closeModal = () => {
+  const closeModal = (modalType) => {
     setModal(null);
     setEditingVendor(null);
     setDeleteTarget(null);
@@ -289,13 +372,13 @@ export default function VendorManagement() {
   return (
     <AppLayout>
       {/* ── TOAST ── */}
-      <div className="toast-container">
+      {/* <div className="toast-container">
         {toasts.map((t) => (
           <div key={t.id} className={`toast toast-${t.type}`}>
             {t.message}
           </div>
         ))}
-      </div>
+      </div> */}
 
       {/* ── PAGE HEADER ── */}
       <div className="page-content">
@@ -456,6 +539,14 @@ export default function VendorManagement() {
                 </thead>
                 <tbody>
                   {vendors.map((v) => (
+                    // <VendorRow
+                    //   key={v._id}
+                    //   vendor={v}
+                    //   onView={() => openView(v)}
+                    //   onEdit={() => openEdit(v)}
+                    //   onToggle={() => handleToggle(v)}
+                    //   onDelete={() => openDelete(v)}
+                    // />
                     <VendorRow
                       key={v._id}
                       vendor={v}
@@ -463,6 +554,7 @@ export default function VendorManagement() {
                       onEdit={() => openEdit(v)}
                       onToggle={() => handleToggle(v)}
                       onDelete={() => openDelete(v)}
+                      toggleLoading={toggleLoadingId === v._id}
                     />
                   ))}
                 </tbody>
@@ -547,6 +639,14 @@ export default function VendorManagement() {
                   <div className="spinner" />
                 </div>
               ) : selectedVendor ? (
+                // <VendorDetail
+                //   data={selectedVendor}
+                //   onEdit={() => {
+                //     closeModal();
+                //     openEdit(selectedVendor.vendor);
+                //   }}
+                //   onDeleteItem={handleDeleteItem}
+                // />
                 <VendorDetail
                   data={selectedVendor}
                   onEdit={() => {
@@ -554,6 +654,7 @@ export default function VendorManagement() {
                     openEdit(selectedVendor.vendor);
                   }}
                   onDeleteItem={handleDeleteItem}
+                  deleteItemLoadingId={deleteItemLoadingId}
                 />
               ) : null}
             </div>
@@ -695,7 +796,14 @@ export default function VendorManagement() {
    SUB-COMPONENTS
 ═══════════════════════════════════════ */
 
-function VendorRow({ vendor: v, onView, onEdit, onToggle, onDelete }) {
+function VendorRow({
+  vendor: v,
+  onView,
+  onEdit,
+  onToggle,
+  onDelete,
+  toggleLoading,
+}) {
   return (
     <tr onClick={onView} style={{ cursor: "pointer" }}>
       <td>
@@ -746,12 +854,20 @@ function VendorRow({ vendor: v, onView, onEdit, onToggle, onDelete }) {
           <ActionBtn title="Edit" onClick={onEdit}>
             ✏
           </ActionBtn>
-          <ActionBtn
+          {/* <ActionBtn
             title={v.isActive ? "Deactivate" : "Activate"}
             onClick={onToggle}
             color={v.isActive ? "var(--red)" : "var(--green)"}
           >
             {v.isActive ? "⏸" : "▶"}
+          </ActionBtn> */}
+          <ActionBtn
+            title={v.isActive ? "Deactivate" : "Activate"}
+            onClick={onToggle}
+            disabled={toggleLoading}
+            color={v.isActive ? "var(--red)" : "var(--green)"}
+          >
+            {toggleLoading ? "⏳" : v.isActive ? "⏸" : "▶"}
           </ActionBtn>
           <ActionBtn title="Delete" onClick={onDelete} color="var(--red)">
             🗑
@@ -805,7 +921,7 @@ function ModalBackdrop({ children, onClose }) {
   );
 }
 
-function VendorDetail({ data, onEdit, onDeleteItem }) {
+function VendorDetail({ data, onEdit, onDeleteItem, deleteItemLoadingId }) {
   const { vendor, stats, recentOrders = [] } = data;
   if (!vendor) return null;
 
@@ -936,7 +1052,7 @@ function VendorDetail({ data, onEdit, onDeleteItem }) {
                   >
                     {fmtRupee(item.price)}
                   </span>
-                  <button
+                  {/* <button
                     onClick={() => onDeleteItem(vendor._id, item._id)}
                     style={{
                       background: "var(--red-dim)",
@@ -950,6 +1066,28 @@ function VendorDetail({ data, onEdit, onDeleteItem }) {
                     }}
                   >
                     Remove
+                  </button> */}
+                  <button
+                    disabled={deleteItemLoadingId === item._id}
+                    onClick={() => onDeleteItem(vendor._id, item._id)}
+                    style={{
+                      background: "var(--red-dim)",
+                      border: "1px solid var(--red)",
+                      borderRadius: "var(--radius-sm)",
+                      padding: "3px 8px",
+                      cursor:
+                        deleteItemLoadingId === item._id
+                          ? "not-allowed"
+                          : "pointer",
+                      color: "var(--red)",
+                      fontSize: "11px",
+                      fontWeight: 600,
+                      opacity: deleteItemLoadingId === item._id ? 0.6 : 1,
+                    }}
+                  >
+                    {deleteItemLoadingId === item._id
+                      ? "Removing..."
+                      : "Remove"}
                   </button>
                 </div>
               </div>
@@ -1112,10 +1250,4 @@ function EditVendorForm({ form, setForm }) {
       </div>
     </div>
   );
-}
-
-function avatarClass(id = "") {
-  const AVATAR_CLASSES = ["avatar-user", "avatar-vendor", "avatar-master"];
-  const sum = [...id].reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  return AVATAR_CLASSES[sum % AVATAR_CLASSES.length];
 }
