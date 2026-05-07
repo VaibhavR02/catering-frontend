@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import "./admin.css";
 import AppLayout from "../components/AppLayout";
 
-const API_URL = "http://localhost:5000/api/v1/admin/dashboard";
+const API_URL =
+  "https://catering-backend-qffz.onrender.com/api/v1/admin/dashboard";
 
 function formatCurrency(n) {
   return `₹${n.toLocaleString("en-IN")}`;
