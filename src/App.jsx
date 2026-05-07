@@ -14,6 +14,7 @@ import UpdateVendor from "./pages/UpdateVendor";
 import SignUp from "./screens/SignUp";
 import Dashboard from "./admin/Dashboard";
 import OrdersAnalytics from "./admin/OrderAnalytics";
+import VendorManagement from "./admin/VendorManagement";
 
 const Placeholder = ({ title }) => (
   <AppLayout>
@@ -166,7 +167,7 @@ export default function App() {
               path="/admin/vendors"
               element={
                 <ProtectedRoute role="master_admin">
-                  <Placeholder title="🏪 Vendors" />
+                  <VendorManagement />
                 </ProtectedRoute>
               }
             />
