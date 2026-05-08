@@ -321,18 +321,20 @@ a {
 }
 
 .login-stats {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  /* position: relative; */
+  z-index: 4;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  /* grid-template-columns: repeat(3, 1fr); */
+  /* gap: 56px; */
 }
 
 .login-stat {
   background: var(--bg-elevated);
   border: 1px solid var(--border-dim);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding: 20px 50px;
 }
 
 .login-stat-value {
@@ -458,7 +460,7 @@ a {
   background: var(--ember);
   border: none;
   border-radius: var(--radius-md);
-  padding: 14px 24px;
+  padding: 8px 8px;
   font-family: var(--font-display);
   font-size: 14px;
   font-weight: 700;
@@ -1791,6 +1793,11 @@ a {
 .status-badge.cancelled {
   background-color: #f8d7da;
   color: #721c24;
+}
+
+.status-badge.delivered {
+  background-color: #37e00d;
+  color: #ffffff;
 }
 
 /* Close Button */

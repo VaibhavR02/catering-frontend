@@ -143,37 +143,48 @@ export default function SignUp() {
 
           <div className="login-brand">
             <div className="login-logo">
-              <div className="logo-mark">🍱</div>
+              <div
+                className="logo-mark"
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  fontSize: "25px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                🍱
+              </div>
               <div className="logo-text">
                 Meal<span>Box</span>
               </div>
             </div>
 
-            <h1 className="login-headline">
+            <h1 className="login-headline ">
               Join the
               <br />
               smarter <em>lunch</em>
               <br />
               network.
             </h1>
-            <p className="login-sub">
+            {/* <p className="login-sub">
               Create your account in seconds. Manage orders, track deliveries,
               and stay on top of your society's meal operations — all in one
               place.
-            </p>
-          </div>
-
-          <div className="login-stats">
-            {[
-              { value: "12K+", label: "Daily Orders" },
-              { value: "98%", label: "On-time Rate" },
-              { value: "₹2.4L", label: "Monthly GMV" },
-            ].map((s) => (
-              <div className="login-stat" key={s.label}>
-                <div className="login-stat-value">{s.value}</div>
-                <div className="login-stat-label">{s.label}</div>
-              </div>
-            ))}
+            </p> */}
+            <div className="login-stats">
+              {[
+                { value: "12K+", label: "Daily Orders" },
+                { value: "98%", label: "On-time Rate" },
+                { value: "₹2.4L", label: "Monthly GMV" },
+              ].map((s) => (
+                <div className="login-stat" key={s.label}>
+                  <div className="login-stat-value">{s.value}</div>
+                  <div className="login-stat-label">{s.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

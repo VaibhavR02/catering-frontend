@@ -608,6 +608,25 @@ export default function MyOrders() {
             <div className="modal-body grid-60-40">
               {/* LEFT SIDE */}
               <div>
+                <div className="panel">
+                  <div className="panel-header">
+                    <div className="panel-title">👨‍🍳 Restaurant</div>
+                  </div>
+                  <div className="panel-body">
+                    <div className="td-primary">
+                      {selectedOrder.vendor?.name || "Vendor Name"}
+                    </div>
+                    <div className="muted">
+                      {selectedOrder.vendor?.address?.plotNo},{" "}
+                      {selectedOrder.vendor?.address?.street},{" "}
+                      {selectedOrder.vendor?.address?.area},{" "}
+                      {selectedOrder.vendor?.address?.city},
+                      {selectedOrder.vendor?.address?.state},
+                      {selectedOrder.vendor?.address?.pincode}
+                    </div>
+                  </div>
+                </div>
+
                 {/* CUSTOMER */}
                 <div className="panel">
                   <div className="panel-header">
@@ -646,11 +665,13 @@ export default function MyOrders() {
 
                   <div className="panel-body">
                     {selectedOrder.items.map((item) => (
-                      <div key={item._id} className="item-row">
-                        <span>{item.name}</span>
-                        <span>
-                          {item.quantity} × ₹{item.price}
-                        </span>
+                      <ul key={item._id} className="item-row">
+                        <li>
+                          {item.name}
+                          <span>
+                            {item.quantity} × ₹{item.price}
+                          </span>
+                        </li>
 
                         <span
                           className="td-primary "
@@ -658,7 +679,7 @@ export default function MyOrders() {
                         >
                           = ₹{item.total}
                         </span>
-                      </div>
+                      </ul>
                     ))}
                   </div>
                 </div>
